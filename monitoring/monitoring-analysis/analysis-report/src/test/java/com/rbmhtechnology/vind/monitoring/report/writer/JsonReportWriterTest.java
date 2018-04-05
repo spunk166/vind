@@ -32,7 +32,7 @@ public class JsonReportWriterTest {
 
 
 
-        this.report = new Report()
+        this.report = new Report("Application id")
                 .setFrom(ZonedDateTime.now().minusDays(1))
                 .setTo(ZonedDateTime.now().plusDays(1))
                 .setRequests(10000)

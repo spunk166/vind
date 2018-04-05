@@ -3,6 +3,8 @@
  */
 package com.rbmhtechnology.vind.monitoring.report;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.*;
 
 /**
@@ -10,11 +12,33 @@ import java.util.*;
  */
 public class ReportConfiguration {
 
+    private String applicationId;
     private Map<String, String> generalFilters = new HashMap<>();
     private Map<String, HashMap<String,String>> facetFieldsExtension = new HashMap<>();
     private Map<String, HashMap<String,String>> suggestionFieldsExtension = new HashMap<>();
     private Map<String, HashMap<String,String>> fulltextQueryExtension = new HashMap<>();
     private List<String> queryFilters = new ArrayList<>();
+
+    public ReportConfiguration (String applicationId){
+        if (StringUtils.isNotEmpty(applicationId)) {
+            this.applicationId = applicationId;
+        } else {
+            throw new RuntimeException("Error creating report configuration: Application ID should not be null or blank");
+        }
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public ReportConfiguration setApplicationId(String applicationId) {
+        if (StringUtils.isNotEmpty(applicationId)) {
+            this.applicationId = applicationId;
+        } else {
+            throw new RuntimeException("Error setting new application ID: Application ID should not be null or blank");
+        }
+        return this;
+    }
 
     public Map<String, String> getGeneralFilters() {
         return generalFilters;
@@ -75,7 +99,9 @@ public class ReportConfiguration {
     }
 
     public ReportConfiguration setQueryFilters(List<String> queryFilters) {
-        this.queryFilters = queryFilters;
+        if (Objects.nonNull(queryFilters)) {
+            this.queryFilters = queryFilters;
+        }
         return this;
     }
 

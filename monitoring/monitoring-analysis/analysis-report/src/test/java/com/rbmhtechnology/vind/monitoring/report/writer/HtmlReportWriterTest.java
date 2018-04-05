@@ -53,8 +53,7 @@ public class HtmlReportWriterTest {
         topUsers.put("User 2", 22l);
 
 
-        this.report = new Report()
-                .setApplicationName("Test HTML report application")
+        this.report = new Report("Test HTML report application")
                 .setFrom(ZonedDateTime.now().minusDays(1))
                 .setTo(ZonedDateTime.now().plusDays(1))
                 .setRequests(10000)

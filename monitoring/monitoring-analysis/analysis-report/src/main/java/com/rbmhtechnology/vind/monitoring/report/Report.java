@@ -20,10 +20,9 @@ public class Report {
     private String longDateFormat = "EEEE, MMMM dd, yyyy hh:mm a - VV";
     private ZoneId zoneId = ZoneOffset.UTC;
 
-    private final ReportConfiguration configuration = new ReportConfiguration();
+    private final ReportConfiguration configuration;
 
     private ZonedDateTime today = ZonedDateTime.now();
-    private String applicationName;
     private ZonedDateTime from;
     private ZonedDateTime to;
     private long requests;
@@ -36,6 +35,14 @@ public class Report {
     private  LinkedHashMap<String, Long> topQueries = new LinkedHashMap<>();
     private  LinkedHashMap<String, Long> topFilteredQueries = new LinkedHashMap<>();
 
+    public Report(ReportConfiguration config) {
+        configuration = config;
+    }
+
+    public Report(String applicationID) {
+        configuration = new ReportConfiguration(applicationID);
+    }
+
 
     public ZonedDateTime getToday() {
         return today;
@@ -47,12 +54,7 @@ public class Report {
     }
 
     public String getApplicationName() {
-        return applicationName;
-    }
-
-    public Report setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
-        return this;
+        return configuration.getApplicationId();
     }
 
     public ZonedDateTime getFrom() {

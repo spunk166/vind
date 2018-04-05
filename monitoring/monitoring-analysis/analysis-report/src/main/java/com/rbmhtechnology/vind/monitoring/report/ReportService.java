@@ -18,27 +18,28 @@ public abstract class ReportService implements AutoCloseable {
     private ZonedDateTime from;
     private ZonedDateTime to;
     private ZoneId zoneId;
-    private String applicationId;
+    private ReportConfiguration config;
 
-    public ReportService(ZonedDateTime from, ZonedDateTime to, String applicationId){
+
+    public ReportService(ZonedDateTime from, ZonedDateTime to, ReportConfiguration config){
         this.from = from;
         this.to = to;
         this.zoneId = from.getZone();
-        this.applicationId = applicationId;
+        this.config = config;
     }
 
-    public ReportService(long from, long to, String zoneId, String applicationId){
+    public ReportService(long from, long to, String zoneId, ReportConfiguration config){
         this.zoneId = ZoneId.of(zoneId);
         this.from = ZonedDateTime.ofInstant(Instant.ofEpochMilli(from), this.zoneId);
         this.to = ZonedDateTime.ofInstant(Instant.ofEpochMilli(to), this.zoneId);
-        this.applicationId = applicationId;
+        this.config = config;
     }
 
-    public ReportService(Date from, Date to, String zoneId, String applicationId){
+    public ReportService(Date from, Date to, String zoneId, ReportConfiguration config){
         this.zoneId = ZoneId.of(zoneId);
         this.from = ZonedDateTime.ofInstant(from.toInstant(), this.zoneId);
         this.to = ZonedDateTime.ofInstant(to.toInstant(), this.zoneId);
-        this.applicationId = applicationId;
+        this.config = config;
     }
 
     //Getters
@@ -51,7 +52,7 @@ public abstract class ReportService implements AutoCloseable {
     }
 
     public String getApplicationId() {
-        return applicationId;
+        return config.getApplicationId();
     }
 
     public ZoneId getZoneId() {
@@ -87,9 +88,9 @@ public abstract class ReportService implements AutoCloseable {
 
     }
 
-    public ReportService setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-        return this;
+
+    public ReportConfiguration getConfig() {
+        return config;
     }
 
     //Total number of requests

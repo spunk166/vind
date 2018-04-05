@@ -4,6 +4,7 @@
 package com.rbmhtechnology.vind.monitoring.report;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 
 import java.time.ZonedDateTime;
@@ -15,12 +16,20 @@ import java.util.LinkedHashMap;
  */
 public class ElasticSearchReportServiceTest {
 
+    private ReportConfiguration config;
+
     //TODO:Mock elasticsearch client and remove ignores
+
+    @BeforeClass
+    public void init(){
+        config= new ReportConfiguration("Application name - 0.0.0");
+
+    }
 
 
     @Ignore
     public void getTotalRequestsTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final long totalRequests = esRepsortService.getTotalRequests();
 
         Assert.assertEquals(10, totalRequests);
@@ -30,7 +39,7 @@ public class ElasticSearchReportServiceTest {
 
     @Ignore
     public void getTopDaysTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final LinkedHashMap<ZonedDateTime, Integer> topDays = esRepsortService.getTopDays();
 
         Assert.assertEquals(2, topDays.size());
@@ -41,7 +50,7 @@ public class ElasticSearchReportServiceTest {
 
     @Ignore
     public void getTopUsersTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final LinkedHashMap<String, Long> topUsers = esRepsortService.getTopUsers();
 
         Assert.assertEquals(3, topUsers.size());
@@ -51,7 +60,7 @@ public class ElasticSearchReportServiceTest {
 
     @Ignore
     public void getTopFacetFieldsTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final LinkedHashMap<String, Long> topFaceFields = esRepsortService.getTopFaceFields();
 
         Assert.assertEquals(2, topFaceFields.size());
@@ -61,7 +70,7 @@ public class ElasticSearchReportServiceTest {
 
     @Ignore
     public void getFacetFieldsValuesTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final LinkedHashMap<String,LinkedHashMap<Object, Long>> topFaceFieldsValues = esRepsortService.getFaceFieldsValues(Arrays.asList("kind"));
 
         Assert.assertEquals(1, topFaceFieldsValues.size());
@@ -71,7 +80,7 @@ public class ElasticSearchReportServiceTest {
 
     @Ignore
     public void getTopSuggestionFieldsTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final LinkedHashMap<String, Long> topSuggestionFields = esRepsortService.getTopSuggestionFields();
 
         Assert.assertEquals(1, topSuggestionFields.size());
@@ -81,7 +90,7 @@ public class ElasticSearchReportServiceTest {
 
     @Ignore
     public void getTopQueriesTest() throws Exception {
-        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), "Application name - 0.0.0");
+        final ElasticSearchReportService esRepsortService = new ElasticSearchReportService("localhost", "9200", "logindex", ZonedDateTime.now().minusYears(1), ZonedDateTime.now().plusYears(1), config);
         final LinkedHashMap<String, Long> topQueries = esRepsortService.getTopQueries();
 
         Assert.assertEquals(3, topQueries.size());

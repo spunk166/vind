@@ -18,10 +18,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created on 28.02.18.
@@ -32,18 +30,18 @@ public class ElasticSearchReportService extends ReportService implements AutoClo
     private ElasticSearchClient elasticClient = new ElasticSearchClient();
 
 
-    public ElasticSearchReportService(String elasticHost, String elasticPort, String elasticIndex, ZonedDateTime from, ZonedDateTime to, String applicationId) {
-        super(from, to, applicationId);
+    public ElasticSearchReportService(String elasticHost, String elasticPort, String elasticIndex, ZonedDateTime from, ZonedDateTime to, ReportConfiguration config) {
+        super(from, to, config);
         elasticClient.init(elasticHost, elasticPort, elasticIndex);
     }
 
-    public ElasticSearchReportService(String elasticHost, String elasticPort, String elasticIndex,Date from, Date to, String timeZoneID, String applicationId) {
-        super(from, to, timeZoneID, applicationId);
+    public ElasticSearchReportService(String elasticHost, String elasticPort, String elasticIndex,Date from, Date to, String timeZoneID, ReportConfiguration config) {
+        super(from, to, timeZoneID, config);
         elasticClient.init(elasticHost, elasticPort, elasticIndex);
     }
 
-    public ElasticSearchReportService(String elasticHost, String elasticPort, String elasticIndex,long from, long to, String timeZoneId, String applicationId) {
-        super(from, to, timeZoneId, applicationId);
+    public ElasticSearchReportService(String elasticHost, String elasticPort, String elasticIndex,long from, long to, String timeZoneId, ReportConfiguration config) {
+        super(from, to, timeZoneId, config);
         elasticClient.init(elasticHost, elasticPort, elasticIndex);
     }
 
@@ -66,7 +64,8 @@ public class ElasticSearchReportService extends ReportService implements AutoClo
         final String query = this.loadQueryFromFile("topDays",
                 this.getApplicationId(),
                 this.getFrom().toInstant().toEpochMilli(),
-                this.getTo().toInstant().toEpochMilli());
+                this.getTo().toInstant().toEpochMilli(),
+                this.getGeneralFilters());
 
         final SearchResult searchResult = elasticClient.getQuery(query);
         final LinkedHashMap<ZonedDateTime, Integer> result = new LinkedHashMap<>();
@@ -206,4 +205,13 @@ public class ElasticSearchReportService extends ReportService implements AutoClo
         }
 
     }
+
+    private String getGeneralFilters() {
+        final String generalFilter = ",\n{ \"term\": {\"%s.keyword\":\"%s\"}}";
+        final String filters = this.getConfig().getGeneralFilters().entrySet().stream()
+                .map( filter -> String.format(generalFilter,filter.getKey(), filter.getValue()))
+                .collect(Collectors.joining(", "));
+        return filters;
+    }
+
 }
